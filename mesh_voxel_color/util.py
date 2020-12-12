@@ -20,7 +20,7 @@ class Util():
 
         if prj_name not in dirs:
             os.mkdir(dir_new)
-            print("Create Directory : {}".format(name))
+            print("Create Directory : {}".format(prj_name))
 
 
     def mkdir_image_0(self, prj_path):
