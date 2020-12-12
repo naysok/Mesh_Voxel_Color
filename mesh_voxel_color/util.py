@@ -4,6 +4,10 @@ import os
 class Util():
 
 
+    def remap_number(self, src, old_min, old_max, new_min, new_max):
+        return ((src - old_min) / (old_max - old_min) * (new_max - new_min) + new_min)
+
+
     def mkdir_prj(self, dir_path, prj_name):
 
         ### Check and Create Dirctory
