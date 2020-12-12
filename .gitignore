@@ -10,6 +10,11 @@
 _module_/
 
 
+### Project Result
+_prj_/
+!_prj_/.gitkeep
+
+
 ### Python 3
 
 # Byte-compiled / optimized / DLL files
