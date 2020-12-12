@@ -25,7 +25,6 @@ stl_name = "bunny-flatfoot_fixed.stl"
 ### WINDOWS 10
 dir_path = "C:\\Users\\ysoky\\Documents\\Mesh_Voxel_Color\\"
 prj_path = dir_path + "_prj_\\" + prj_name + "\\"
-stl_path = dir_path + "_stl_\\bunny-flatfoot_fixed_light.stl"
 stl_path = dir_path + "_stl_\\" + stl_name
 
 
