@@ -119,6 +119,9 @@ class ImageProcessingPIL():
         ### Draw Lines
         self.draw_lines(canvas, canvas_size, volume_size, lines)
 
+        ### Format
+        index_pad = "%04d"%(int(index))
+
         ### Save Canvas
-        export_path = prj_path + "image_0\\image_{}.jpg".format(str(int(index))) 
+        export_path = prj_path + "image_0\\image_{}.jpg".format(str(index_pad)) 
         self.export_image(canvas, export_path)
