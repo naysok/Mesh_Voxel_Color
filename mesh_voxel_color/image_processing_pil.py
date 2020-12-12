@@ -4,6 +4,14 @@ from PIL import Image, ImageDraw, ImageOps, ImageEnhance
 
 class ImageProcessingPIL():
 
+
+    ############################
+    ####                     ###
+    ####     I/O + Basics    ###
+    ####                     ###
+    ############################
+
+
     def open_image(self, path):
         img = Image.open(path)
         return img
@@ -12,13 +20,29 @@ class ImageProcessingPIL():
     def export_image(self, img, path):
         img.save(path, quality=100)
         print("Export : {}".format(path))
-    
+
 
     def create_canvas(self, canvas_size):
         new = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
         return new
-    
-    
+
+
+    ########################################
+
+
+    ##############################
+    ####                       ###
+    ####     Draw, Convert     ###
+    ####                       ###
+    ##############################
+
+
+    def convert_vert2s_to_lines(self, vert2s):
+        
+        ### vert2s = [[[x0, y0, z0], [x1, y1, z1]], , , , , , [[xm, ym, zm], [xn, yn, zn]]]
+        pass
+
+
     def draw_line(self, canvas_draw, line):
 
         canvas_draw.line((line), fill=(0, 0, 0), width = 2)
