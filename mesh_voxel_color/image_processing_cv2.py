@@ -17,10 +17,17 @@ class ImageProcessingCV2():
         return img
 
 
-    def create_img(self, image_size):
+    def create_image(self, image_size):
 
-        # Create a black image
+        ### Create Black Image
         img = np.zeros((image_size, image_size, 3), np.uint8)
+        
+        ### Show
+        # cv2.imshow("image", img)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+        return img
 
 
     def find_hierarchy(self, img):
@@ -40,9 +47,15 @@ class ImageProcessingCV2():
 
         contours, hierarchy = cv2.findContours(gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         # print("contours=",len(contours),  "hierarchy=",len(hierarchy))
+        print(hierarchy)
 
         ### contours[0] : Image Edge
-        ### contours[1] : Contour
+        ### contours[1] : Contour-Outside
+        ### contours[2] : Contour-Inside
+
+        cv2.drawContours(img, contours[0], -1,(255,  0,  0),3)
+        cv2.drawContours(img, contours[1], -1,(  0,255,  0),3)
+        cv2.drawContours(img, contours[2], -1,(  0,  0,255),3)
 
 
         ### Show
