@@ -5,6 +5,18 @@
 このライブラリで生成した連番画像から 3D 描画は、3D プリントデータへの変換ソフトではできるが、適当なソフトウェアでは難しい。これだと不便なので擬似的にレンダリングを行うライブラリを書いた。  
 
 
+### Project Result  
+
+```
+_prj_
+    └── PRJECT_NAME
+        ├── image_0
+        │     // Contour Lines
+        ├── image_1
+        │     // Filled Contour Lines
+```
+
+
 ### Related Projects  
 
 - Contour_Draw_3D  
