@@ -36,6 +36,8 @@ VOLUME_SIZE = _INCH * INCH_AMP
 CANVAS_SIZE = int(300 * INCH_AMP)
 LAYER_COUNT = int(VOLUME_SIZE / _LAYER_HEIGHT)
 
+UP_SAMPLING_XY = 2
+
 
 ################################################################################
 
@@ -55,12 +57,10 @@ for i in range(LAYER_COUNT):
     line_ = line_path + "image_{}.jpg".format(index)
     fill_ = fill_path + "image_{}.jpg".format(index)
 
-
-    if i == 420:
-        # ic.create_image(CANVAS_SIZE)
-
-        image_line = ic.open_image(line_)
-        polylines = ic.find_hierarchy(image_line)
+    ##3 Process
+    image_line = ic.open_image(line_)
+    image_fill = ic.find_draw_hierarchy(image_line, UP_SAMPLING_XY)
+    ic.export_image(image_fill, fill_)
 
 
 time_1 = time.time()
