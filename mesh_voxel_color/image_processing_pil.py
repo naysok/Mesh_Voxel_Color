@@ -85,7 +85,7 @@ class ImageProcessingPIL():
         ### Color : Black
         ### Line Width : 2
 
-        canvas_draw.line((line), fill = (0, 0, 0), width = 2)
+        canvas_draw.line((line), fill = (0, 0, 0), width = 3)
         return canvas_draw
 
 
