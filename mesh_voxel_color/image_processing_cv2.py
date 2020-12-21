@@ -17,6 +17,12 @@ class ImageProcessingCV2():
         return img
 
 
+    def export_image(self, img, file_path):
+
+        cv2.imwrite(file_path, img)
+        print("imwrite :", file_path)
+
+
     def create_image(self, image_size):
 
         ### Create Black Image
@@ -61,8 +67,16 @@ class ImageProcessingCV2():
 
         h, w, c = img.shape
         
+
+        #########################
+        ###                   ###
+        ###   Find Contours   ###
+        ###                   ###
+        #########################
+
+
         ### 
-        k0 = 2
+        k0 = 3
         kernel = np.ones((k0, k0), np.uint8)
         erosion = cv2.erode(img, kernel, iterations = 1)
 
@@ -78,54 +92,72 @@ class ImageProcessingCV2():
 
         # print("Contour Count :", len(contours))
 
-        # ### Draw Line (Test)
-        # canvas_line = self.create_image(w)
-        #
-        # for i in range(len(contours)):
-        #
-        #     ### contours[0] : Image Edge
-        #     # if i != 0:
-        #     if i != 0:
-        #
-        #         cnt = contours[i]
-        #         cv2.drawContours(canvas_line, cnt, -1,(0, 0, 255), 1)
-        #
-        # ### Show
-        # cv2.imshow("image", canvas_line)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
+
+        ########################################
 
 
-        ### Draw Fill
-        canvas_all = []
+        #########################
+        ###                   ###
+        ###   Draw Contours   ###
+        ###                   ###
+        #########################
 
-        for i in range(len(contours)):
 
-            ### contours[0] : Image Edge
-            if i != 0:
+        ### Not Exit Contours
+        if len(contours) <= 1:
+            canvas_null = self.create_image(w)
+            return canvas_null
 
-                canvas = self.create_image(w)
-                cnt = contours[i]
-                
-                ### cv2.fillPoly / cv2.fillConvecFill
-                ### http://dothiko.hatenablog.com/entry/2018/12/24/003822
-                cv2.fillPoly(canvas, [cnt], (1, 0, 0))
+        ### Draw Contour
+        else:
 
-                canvas_all.append(canvas)
+            # ### Draw Line (Test)
+            # canvas_line = self.create_image(w)
+            #
+            # for i in range(len(contours)):
+            #
+            #     ### contours[0] : Image Edge
+            #     # if i != 0:
+            #     if i != 0:
+            #
+            #         cnt = contours[i]
+            #         cv2.drawContours(canvas_line, cnt, -1,(0, 0, 255), 1)
+            #
+            # ### Show
+            # cv2.imshow("image", canvas_line)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
 
-        ### Contour Image
-        img_boolean = self.boolean_canvas(canvas_all)
+            ### Draw Fill
+            canvas_all = []
 
-        ### Resize
-        orgHeight, orgWidth = img_boolean.shape[:2]
-        new_size = (int(orgHeight / up_sapling_xy), int(orgWidth / up_sapling_xy))
-        # print(new_size)
+            for i in range(len(contours)):
 
-        result = cv2.resize(img_boolean, new_size)
+                ### contours[0] : Image Edge
+                if i != 0:
 
-        # ### Show
-        # cv2.imshow("image", result)
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-        
-        return result
+                    canvas = self.create_image(w)
+                    cnt = contours[i]
+                    
+                    ### cv2.fillPoly / cv2.fillConvecFill
+                    ### http://dothiko.hatenablog.com/entry/2018/12/24/003822
+                    cv2.fillPoly(canvas, [cnt], (1, 0, 0))
+
+                    canvas_all.append(canvas)
+
+            ### Contour Image
+            img_boolean = self.boolean_canvas(canvas_all)
+
+            ### Resize
+            orgHeight, orgWidth = img_boolean.shape[:2]
+            new_size = (int(orgHeight / up_sapling_xy), int(orgWidth / up_sapling_xy))
+            # print(new_size)
+
+            result = cv2.resize(img_boolean, new_size)
+
+            # ### Show
+            # cv2.imshow("image", result)
+            # cv2.waitKey(0)
+            # cv2.destroyAllWindows()
+            
+            return result
