@@ -57,22 +57,17 @@ class ImageProcessingCV2():
         return img_segment
 
 
-    def find_hierarchy(self, img):
+    def find_draw_hierarchy(self, img, up_sapling_xy):
 
         h, w, c = img.shape
         
         ### 
-        k0 = 3
+        k0 = 2
         kernel = np.ones((k0, k0), np.uint8)
         erosion = cv2.erode(img, kernel, iterations = 1)
 
         ### Gray Scale
         gray = cv2.cvtColor(erosion, cv2.COLOR_RGB2GRAY)
-
-        ### Show
-        cv2.imshow("image", gray)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
 
         ### opencv 4
         ### https://qiita.com/rareshana/items/6a2f5e7396f28f6eee49
@@ -81,10 +76,27 @@ class ImageProcessingCV2():
         # print("contours=",len(contours),  "hierarchy=",len(hierarchy))
         # print(hierarchy)
 
-        ### Nesting
-        hierarchy = hierarchy[0]
+        # print("Contour Count :", len(contours))
 
-        ### Segment
+        # ### Draw Line (Test)
+        # canvas_line = self.create_image(w)
+        #
+        # for i in range(len(contours)):
+        #
+        #     ### contours[0] : Image Edge
+        #     # if i != 0:
+        #     if i != 0:
+        #
+        #         cnt = contours[i]
+        #         cv2.drawContours(canvas_line, cnt, -1,(0, 0, 255), 1)
+        #
+        # ### Show
+        # cv2.imshow("image", canvas_line)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
+
+
+        ### Draw Fill
         canvas_all = []
 
         for i in range(len(contours)):
@@ -94,17 +106,26 @@ class ImageProcessingCV2():
 
                 canvas = self.create_image(w)
                 cnt = contours[i]
-                cv2.fillConvexPoly(canvas, cnt, (1, 0, 0))
+                
+                ### cv2.fillPoly / cv2.fillConvecFill
+                ### http://dothiko.hatenablog.com/entry/2018/12/24/003822
+                cv2.fillPoly(canvas, [cnt], (1, 0, 0))
 
                 canvas_all.append(canvas)
 
+        ### Contour Image
         img_boolean = self.boolean_canvas(canvas_all)
 
-        ### Show
-        cv2.imshow("image", img_boolean)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        ### Resize
+        orgHeight, orgWidth = img_boolean.shape[:2]
+        new_size = (int(orgHeight / up_sapling_xy), int(orgWidth / up_sapling_xy))
+        # print(new_size)
 
-        # result = contours[1]
+        result = cv2.resize(img_boolean, new_size)
+
+        # ### Show
+        # cv2.imshow("image", result)
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
         
-        # return result
+        return result
