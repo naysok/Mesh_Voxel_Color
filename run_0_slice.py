@@ -15,11 +15,11 @@ ut = util.Util()
 # prj_name = "bunny_light"
 # stl_name = "bunny-flatfoot_fixed_light.stl"
 
-prj_name = "bunny"
-stl_name = "bunny-flatfoot_fixed.stl"
+# prj_name = "bunny"
+# stl_name = "bunny-flatfoot_fixed.stl"
 
-# prj_name = "ship"
-# stl_name = "3DBenchy_fixed.stl"
+prj_name = "ship"
+stl_name = "3DBenchy_fixed.stl"
 
 
 ### WINDOWS 10
@@ -38,6 +38,8 @@ INCH_AMP = 2.0
 VOLUME_SIZE = _INCH * INCH_AMP
 CANVAS_SIZE = int(300 * INCH_AMP)
 LAYER_COUNT = int(VOLUME_SIZE / _LAYER_HEIGHT)
+
+UP_SAMPLING_XY = 2
 
 
 ################################################################################
@@ -60,7 +62,7 @@ for i in range(LAYER_COUNT):
     lines = sg.contour_meshes(meshes, ranges, h)
     
     ### Draw Contour + Save inaage
-    ip.draw_contours(prj_path, CANVAS_SIZE, VOLUME_SIZE, i, lines)
+    ip.draw_contours(prj_path, CANVAS_SIZE, VOLUME_SIZE, UP_SAMPLING_XY, i, lines)
 
 
 time_1 = time.time()
