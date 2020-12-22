@@ -53,6 +53,36 @@ class Util():
             print("Create Directory : {}".format(name))
 
 
+    def mkdir_image_2(self, prj_path):
+
+        ### Check and Create Dirctory
+        dirs = []
+        name = "image_2"
+
+        for i in os.listdir(prj_path):
+            dirs.append(i)
+        dir_new = prj_path + name
+
+        if name not in dirs:
+            os.mkdir(dir_new)
+            print("Create Directory : {}".format(name))
+
+
+    def mkdir_image_3(self, prj_path):
+
+        ### Check and Create Dirctory
+        dirs = []
+        name = "image_3"
+
+        for i in os.listdir(prj_path):
+            dirs.append(i)
+        dir_new = prj_path + name
+
+        if name not in dirs:
+            os.mkdir(dir_new)
+            print("Create Directory : {}".format(name))
+
+
     def prepare_prj_dir(self, dir_path, prj_name):
 
         ### Run (Initialize)
@@ -61,3 +91,5 @@ class Util():
         self.mkdir_prj(dir_path, prj_name)
         self.mkdir_image_0(prj_path)
         self.mkdir_image_1(prj_path)
+        self.mkdir_image_2(prj_path)
+        self.mkdir_image_3(prj_path)
