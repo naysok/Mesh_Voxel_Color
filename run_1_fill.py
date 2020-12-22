@@ -61,7 +61,7 @@ for i in range(LAYER_COUNT):
     line_ = line_path + "image_{}.jpg".format(index)
     fill_ = fill_path + "image_{}.jpg".format(index)
 
-    ##3 Process
+    ### Process
     image_line = cc.open_image(line_)
     image_fill = cc.find_draw_hierarchy(image_line, UP_SAMPLING_XY)
     cc.export_image(image_fill, fill_)
