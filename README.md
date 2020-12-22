@@ -5,6 +5,24 @@
 このライブラリで生成した連番画像から 3D 描画は、3D プリントデータへの変換ソフトではできるが、適当なソフトウェアでは難しい。これだと不便なので擬似的にレンダリングを行うライブラリを書いた。  
 
 
+### Process  
+
+- [x] run_0_slice.py  
+  - Calc Contour Line by Line-Plane Intersection Algorithm  
+
+- [x] run_1_fill.py  
+  - Calc Filled Contour by Find-Contour (OpenCV)  
+
+- [ ] run_2_color.py  
+  - Calc Color from Pixel-Target Distance  
+
+- [ ] run_3_convert_mat.py  
+  - Calc CMYK Material  
+
+- [ ] run_4_gen_render.py  
+  - Generate Render Image (Contour_Draw_3D)
+
+
 ### Project Result  
 
 ```
@@ -13,7 +31,13 @@ _prj_
         ├── image_0
         │     // Contour Lines
         ├── image_1
-        │     // Filled Contour Lines
+        │     // Filled Contour
+        ├── image_2
+        │     // Set Color
+        ├── image_3
+        │     // Calc CMYK (Draft for Printer)
+        └── image_4
+              // 3D Rendered (from image_3)
 ```
 
 
