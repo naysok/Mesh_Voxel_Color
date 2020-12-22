@@ -6,7 +6,7 @@ from .import util
 ut = util.Util()
 
 
-class ImageProcessingPIL():
+class ContourPIL():
 
 
     ############################

@@ -1,9 +1,9 @@
 import time
 
-from mesh_voxel_color import image_processing_cv2
+from mesh_voxel_color import contour_cv2
 from mesh_voxel_color import util
 
-ic = image_processing_cv2.ImageProcessingCV2()
+cc = contour_cv2.ContourCV2()
 ut = util.Util()
 
 
@@ -58,9 +58,9 @@ for i in range(LAYER_COUNT):
     fill_ = fill_path + "image_{}.jpg".format(index)
 
     ##3 Process
-    image_line = ic.open_image(line_)
-    image_fill = ic.find_draw_hierarchy(image_line, UP_SAMPLING_XY)
-    ic.export_image(image_fill, fill_)
+    image_line = cc.open_image(line_)
+    image_fill = cc.find_draw_hierarchy(image_line, UP_SAMPLING_XY)
+    cc.export_image(image_fill, fill_)
 
 
 time_1 = time.time()

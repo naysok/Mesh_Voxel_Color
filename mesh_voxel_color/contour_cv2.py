@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-class ImageProcessingCV2():
+class ContourCV2():
 
 
     def open_image(self, file_path):

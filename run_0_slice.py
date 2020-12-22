@@ -1,10 +1,10 @@
 import time
 
-from mesh_voxel_color import image_processing_pil
+from mesh_voxel_color import contour_pil
 from mesh_voxel_color import slice_geometry
 from mesh_voxel_color import util
 
-ip = image_processing_pil.ImageProcessingPIL()
+cp = contour_pil.ContourPIL()
 sg = slice_geometry.SliceGeometry()
 ut = util.Util()
 
@@ -62,7 +62,7 @@ for i in range(LAYER_COUNT):
     lines = sg.contour_meshes(meshes, ranges, h)
     
     ### Draw Contour + Save inaage
-    ip.draw_contours(prj_path, CANVAS_SIZE, VOLUME_SIZE, UP_SAMPLING_XY, i, lines)
+    cp.draw_contours(prj_path, CANVAS_SIZE, VOLUME_SIZE, UP_SAMPLING_XY, i, lines)
 
 
 time_1 = time.time()
