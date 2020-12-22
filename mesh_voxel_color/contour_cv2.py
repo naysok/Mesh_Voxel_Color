@@ -67,12 +67,17 @@ class ContourCV2():
 
         h, w, c = img.shape
         
-
-        #########################
-        ###                   ###
-        ###   Find Contours   ###
-        ###                   ###
-        #########################
+        
+        ##################################################
+        ###                                            ###
+        ###   Find Contours                            ###
+        ###                                            ###
+        ###   1) Erosion (Line ++)                     ###
+        ###   2) Find Contour                          ###
+        ###   3) Inside / Outside (Select Small-One)   ###
+        ###   4) Dilation (Shape ++)                   ### 
+        ###                                            ###
+        ###################################################
 
 
         ### 
@@ -148,12 +153,17 @@ class ContourCV2():
             ### Contour Image
             img_boolean = self.boolean_canvas(canvas_all)
 
+            ### Dilation
+            k1 = 2
+            kernel = np.ones((k1, k1), np.uint8)
+            dilation = cv2.dilate(img_boolean, kernel, iterations = 1)
+
             ### Resize
-            orgHeight, orgWidth = img_boolean.shape[:2]
+            orgHeight, orgWidth = dilation.shape[:2]
             new_size = (int(orgHeight / up_sapling_xy), int(orgWidth / up_sapling_xy))
             # print(new_size)
 
-            result = cv2.resize(img_boolean, new_size)
+            result = cv2.resize(dilation, new_size)
 
             # ### Show
             # cv2.imshow("image", result)
