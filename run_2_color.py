@@ -13,11 +13,11 @@ ut = util.Util()
 # prj_name = "bunny_light"
 # stl_name = "bunny-flatfoot_fixed_light.stl"
 
-# prj_name = "bunny"
-# stl_name = "bunny-flatfoot_fixed.stl"
+prj_name = "bunny"
+stl_name = "bunny-flatfoot_fixed.stl"
 
-prj_name = "ship"
-stl_name = "3DBenchy_fixed.stl"
+# prj_name = "ship"
+# stl_name = "3DBenchy_fixed.stl"
 
 
 
@@ -70,10 +70,12 @@ for i in range(LAYER_COUNT):
     fill_ = fill_path + "image_{}.jpg".format(index)
     clrs_ = clrs_path + "image_{}.jpg".format(index)
 
-    if i == 72:
-    # if i == 420:
-        image_fill = cl.open_image(fill_)
-        image_fill.show()
+    height = LAYER_COUNT * i
+
+    # if i == 72:
+    if i == 420:
+        image_clrs = cl.scan_image_calc_color(fill_, height, pts)
+        image_clrs.show()
 
 
 time_1 = time.time()
