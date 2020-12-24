@@ -10,14 +10,14 @@ ut = util.Util()
 ################################################################################
 
 
-# prj_name = "bunny_light"
-# stl_name = "bunny-flatfoot_fixed_light.stl"
+prj_name = "bunny_light"
+stl_name = "bunny-flatfoot_fixed_light.stl"
 
 # prj_name = "bunny"
 # stl_name = "bunny-flatfoot_fixed.stl"
 
-prj_name = "ship"
-stl_name = "3DBenchy_fixed.stl"
+# prj_name = "ship"
+# stl_name = "3DBenchy_fixed.stl"
 
 
 
@@ -25,8 +25,8 @@ stl_name = "3DBenchy_fixed.stl"
 dir_path = "C:\\Users\\ysoky\\Documents\\Mesh_Voxel_Color\\"
 prj_path = dir_path + "_prj_\\" + prj_name + "\\"
 
-line_path = prj_path + "\\image_0\\"
-fill_path = prj_path + "\\image_1\\"
+line_path = prj_path + "image_0" + "\\"
+fill_path = prj_path + "image_1" + "\\"
 
 
 ### Resolution : 300 DPI
