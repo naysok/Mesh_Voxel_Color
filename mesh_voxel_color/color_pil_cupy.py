@@ -26,6 +26,13 @@ class ColorPILCupy():
     ############################
 
 
+    def remap_number_cp(self, arr, old_min, old_max, target_min, target_max):
+
+        new_arr = (arr - old_min) / (old_max - old_min) * (target_max - target_min) + target_min
+
+        return new_arr
+
+
     def open_image(self, path):
         img = Image.open(path)
         return img
@@ -46,14 +53,18 @@ class ColorPILCupy():
         return new
 
 
+    ########################################
+
+
     def get_points_from_stl(self, file_path):
         
         ### Point From STL
         pts = sp.stl2points(file_path)
+
         return pts
 
 
-    def get_points_from_stl_np(self, file_path):
+    def get_points_from_stl_np(self, file_path, volume_size, canvas_size):
     
         ### Cupy
         
@@ -63,7 +74,12 @@ class ColorPILCupy():
         # print(pts_format)
 
         pts_cp = cp.array(pts_format)
-        return pts_cp
+
+        pts_cp_remap = self.remap_number_cp(pts_cp, 0, volume_size, 0, canvas_size)
+
+        # print(pts_cp)
+
+        return pts_cp_remap
 
 
     def clac_all_distance(self, pos, pts):
@@ -73,6 +89,7 @@ class ColorPILCupy():
         ### Generate Vector
         v = pos - pts
         # print("v.shape :", v.shape)
+        # print(v)
 
         vt = v.T
 
@@ -103,7 +120,7 @@ class ColorPILCupy():
         img = self.open_image(file_path)
 
         w, h = img.size
-        result_img = self.create_canvas_alpha(w)
+        img_result = self.create_canvas_alpha(w)
 
         px = img.getdata()
         px_length = len(px)
@@ -112,12 +129,12 @@ class ColorPILCupy():
         # print("Running on Cuda !!")
 
         ### Generate Distance-List
-        # print("Distance")
+        print("Distance")
         
         px_list = []
         for i in range(w):
             for j in range(h):
-                px_list.append([[i, j, height]])
+                px_list.append([[j, i, height]])
         
         ### pos-numpy array (from Image)
         pos_cp = cp.array(px_list)
@@ -145,78 +162,44 @@ class ColorPILCupy():
             dist_tmp.append(d)
 
         dist_list = cp.concatenate(dist_tmp, 0)
-
-        print(len(dist_list))
+        # print(len(dist_list))
         
-
-        """
-
-        dist = []
-
-        for i in range(px_length):
-
-            if i%200 == 0:
-                
-                ############################################################
-                # print(i)
-
-                rr, gg, bb = px[i]
-
-                ### Process
-                ### Calc Distance
-                if rr > 127:
-
-                    if i == 0:
-                        u, v = [0, 0]
-                        d = self.calc_distance_min([u, v, height], pts)
-                        dist.append(d)
-
-                    else:
-                        u, v = divmod(px_length, i)
-                        d = self.calc_distance_min([u, v, height], pts)
-                        dist.append(d)
-                ############################################################
-                
-                ### None
-                else:
-                    dist.append(0)
-                
-            ### None (dev)
-            else:
-                dist.append(0)
-
-        # print(dist)
 
         ### Generate Color From Distance
-        
         print("Color")
 
-        result_px = []
+        dist_min = cp.amin(dist_list)
+        dist_max = cp.amax(dist_list)
+        dist_remap = self.remap_number_cp(dist_list, 0, 600, 0, 200)
 
-        d_min = min(dist)
-        d_max = max(dist)
+        dist = dist_remap.tolist()
 
-        th = 1000
+        # print(type(dist_remap))
+        # print(type(dist))
 
+        px_result = []
+        
         for j in range(px_length):
-            d = dist[j]
             
+            p = px[j]
+            rr, gg, bb = p
+
+            d = int(dist[j])
+
+            ### White (Inside)
+            if rr > 127:
+                v = int((math.sin(d) + 1.0) * 0.5 * 255)
+                c = (v, v, v, 255)
+                px_result.append(c)
+
             ### Outside
-            if d == 0:
-                result_px.append((0, 0, 0, 0))
-
-            elif d > th:
-                result_px.append((255, 0, 0, 255))
-
             else:
-                c = int(ut.remap_number(d, 0, th, 0, 255))
-                # result_px.append((0, c, 0, 255))
-                result_px.append((0, 0, 255, 255))
+                c = (0, 0, 0, 0)
+                px_result.append(c)
 
 
         # ### Generate New Image
-        result_img.putdata(tuple(result_px))
+        img_result.putdata(tuple(px_result))
 
-        return result_img
 
-        """
+        return img_result
