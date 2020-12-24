@@ -64,20 +64,6 @@ class ColorPIL():
         return pts_np
 
 
-    def calc_distance_min(self, pos, pts):
-
-        pos_n = np.array(pos)
-        pts_n = np.array(pts)
-
-        v = pts_n - pos_n
-        vt = v.T
-        
-        d = np.sqrt((vt[0] * vt[0]) + (vt[1] * vt[1]) + (vt[2] * vt[2]))
-        d_min = np.min(d)
-
-        return d_min
-
-
     def clac_all_distance(self, pos, pts):
 
         v = pos - pts
@@ -115,8 +101,11 @@ class ColorPIL():
         px = img.getdata()
         px_length = len(px)
 
+        ### Running on Cuda
+        print("Running on CPU !!")
+
         ### Generate Distance-List
-        print("Distance")
+        # print("Distance")
         
         px_list = []
         for i in range(w):
@@ -128,6 +117,8 @@ class ColorPIL():
         # print("pos.shape :", pos_np.shape)
 
         ### Process
+        ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
+        
         SPLIT = 1000
         pos_np_split = np.array_split(pos_np, SPLIT)
         # print(len(pos_np_split))
