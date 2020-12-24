@@ -56,7 +56,10 @@ time_0 = time.time()
 ut.prepare_prj_dir(dir_path, prj_name)
 
 ### Get Points
-pts = cl.get_points_from_stl(target_path)
+# pts = cl.get_points_from_stl(target_path)
+### Get Points (numpy-array)
+pts_np = cl.get_points_from_stl_np(target_path)
+
 
 # print(len(pts))
 # print(pts[0])
@@ -74,8 +77,8 @@ for i in range(LAYER_COUNT):
 
     # if i == 72:
     if i == 420:
-        image_clrs = cl.scan_image_calc_color(fill_, height, pts)
-        image_clrs.show()
+        image_clrs = cl.scan_image_calc_color(fill_, height, pts_np)
+        # image_clrs.show()
 
 
 time_1 = time.time()
