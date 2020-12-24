@@ -71,6 +71,9 @@ _prj_
 - Contours Hierarchy (opencv-python-tutroals)  
   [https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contours_hierarchy/py_contours_hierarchy.html#contours-hierarchy](https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_contours/py_contours_hierarchy/py_contours_hierarchy.html#contours-hierarchy)  
 
+- [python] Numpyで巨大な配列を効率的に処理するためのTips集 (Qiita)  
+  [https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0](https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0)  
+
 - STLファイルフォーマット  
   [https://www.hiramine.com/programming/3dmodelfileformat/stlfileformat.html](https://www.hiramine.com/programming/3dmodelfileformat/stlfileformat.html)
 
