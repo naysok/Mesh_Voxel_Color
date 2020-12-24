@@ -1,9 +1,11 @@
 import time
 
 from mesh_voxel_color import color_pil
+from mesh_voxel_color import color_pil_cupy
 from mesh_voxel_color import util
 
-cl = color_pil.ColorPIL()
+# cl = color_pil.ColorPIL()
+cl = color_pil_cupy.ColorPILCupy()
 ut = util.Util()
 
 
@@ -13,11 +15,11 @@ ut = util.Util()
 # prj_name = "bunny_light"
 # stl_name = "bunny-flatfoot_fixed_light.stl"
 
-prj_name = "bunny"
-stl_name = "bunny-flatfoot_fixed.stl"
+# prj_name = "bunny"
+# stl_name = "bunny-flatfoot_fixed.stl"
 
-# prj_name = "ship"
-# stl_name = "3DBenchy_fixed.stl"
+prj_name = "ship"
+stl_name = "3DBenchy_fixed.stl"
 
 
 
@@ -58,7 +60,7 @@ ut.prepare_prj_dir(dir_path, prj_name)
 ### Get Points
 # pts = cl.get_points_from_stl(target_path)
 ### Get Points (numpy-array)
-pts_np = cl.get_points_from_stl_np(target_path)
+pts_np = cl.get_points_from_stl_np(target_path, VOLUME_SIZE, CANVAS_SIZE)
 
 
 # print(len(pts))
@@ -73,12 +75,20 @@ for i in range(LAYER_COUNT):
     fill_ = fill_path + "image_{}.jpg".format(index)
     clrs_ = clrs_path + "image_{}.jpg".format(index)
 
-    height = LAYER_COUNT * i
+    height = (CANVAS_SIZE / LAYER_COUNT) * i
+    # print(height)
 
-    # if i == 72:
+    # if i == 76:
     if i == 420:
+    # if i == 1000:
+
+
+        time_00 = time.time()
+
         image_clrs = cl.scan_image_calc_color(fill_, height, pts_np)
-        # image_clrs.show()
+        image_clrs.show()
+
+        time_01 = time.time()
 
 
 time_1 = time.time()
@@ -87,3 +97,4 @@ time_1 = time.time()
 ################################################################################
 
 print("Time_01 : {}Sec".format(time_1 - time_0))
+print("Time_0011 : {}Sec".format(time_01 - time_00))
