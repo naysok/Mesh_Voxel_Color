@@ -104,6 +104,47 @@ class ColorPILCupy():
         return dm_cp
 
 
+    def gen_disctance_list(self, w, h, height, pts_cp):
+
+        ### Generate Distance-List
+        # print("Distance")
+
+        px_list = []
+        for i in range(w):
+            for j in range(h):
+                px_list.append([[j, i, height]])
+        
+        ### pos-numpy array (from Image)
+        pos_cp = cp.array(px_list)
+        # print("pos.shape :", pos_cp.shape)
+
+        ### Separate Process
+        ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
+
+        SPLIT = 500
+        pos_cp_split = cp.array_split(pos_cp, SPLIT)
+        # print(len(pos_cp_split))
+
+        dist_tmp = []
+
+        for i in range(SPLIT):
+
+            tmp_p = pos_cp_split[i]
+            # print("pts.shape :", tmp_p.shape)
+
+            ### pts-numpy array (from STL)
+            # print("pts.shape :", pts_cp.shape)
+
+            ### 
+            d = self.clac_all_distance(tmp_p, pts_cp)
+            dist_tmp.append(d)
+
+        dist_list = cp.concatenate(dist_tmp, 0)
+        # print(len(dist_list))
+
+        return dist_list
+
+
     ########################################
 
 
@@ -124,82 +165,97 @@ class ColorPILCupy():
 
         px = img.getdata()
         px_length = len(px)
+        
+        px_cp = cp.array(px)
+        px_seg_0 = cp.amax(px_cp)
+
+        # print("px.shape :", px_cp.shape)
+        # print("px_seg_0 :", px_seg_0)
+
 
         ### Running on Cuda
         # print("Running on Cuda !!")
 
-        ### Generate Distance-List
-        print("Distance")
-        
-        px_list = []
-        for i in range(w):
-            for j in range(h):
-                px_list.append([[j, i, height]])
-        
-        ### pos-numpy array (from Image)
-        pos_cp = cp.array(px_list)
-        # print("pos.shape :", pos_cp.shape)
+        ### Contour : True
+        if px_seg_0 > 127:
+            ### Distance
+            dist_list = self.gen_disctance_list(w, h, height, pts_cp)
 
-        ### Separate Process
-        ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
 
-        SPLIT = 1000
-        pos_cp_split = cp.array_split(pos_cp, SPLIT)
-        # print(len(pos_cp_split))
 
-        dist_tmp = []
 
-        for i in range(SPLIT):
+            ### Generate Color From Distance
+            # print("Color")
 
-            tmp_p = pos_cp_split[i]
-            # print("pts.shape :", tmp_p.shape)
+            dist_min = cp.amin(dist_list)
+            dist_max = cp.amax(dist_list)
 
-            ### pts-numpy array (from STL)
-            # print("pts.shape :", pts_cp.shape)
+            dist = dist_list.tolist()
 
-            ### 
-            d = self.clac_all_distance(tmp_p, pts_cp)
-            dist_tmp.append(d)
 
-        dist_list = cp.concatenate(dist_tmp, 0)
-        # print(len(dist_list))
-        
+            # dist_remap = self.remap_number_cp(dist_list, 0, 600, 0, 150)
+            # dist = dist_remap.tolist()
 
-        ### Generate Color From Distance
-        print("Color")
 
-        dist_min = cp.amin(dist_list)
-        dist_max = cp.amax(dist_list)
-        dist_remap = self.remap_number_cp(dist_list, 0, 600, 0, 200)
+            # print(type(dist_remap))
+            # print(type(dist))
 
-        dist = dist_remap.tolist()
-
-        # print(type(dist_remap))
-        # print(type(dist))
-
-        px_result = []
-        
-        for j in range(px_length):
+            px_result = []
             
-            p = px[j]
-            rr, gg, bb = p
+            for j in range(px_length):
+                
+                rr, gg, bb = px[j]
+                d = dist_list[j]
 
-            d = int(dist[j])
-
-            ### White (Inside)
-            if rr > 127:
-                v = int((math.sin(d) + 1.0) * 0.5 * 255)
-                c = (v, v, v, 255)
-                px_result.append(c)
-
-            ### Outside
-            else:
-                c = (0, 0, 0, 0)
-                px_result.append(c)
+                black = (0, 0, 0, 255)
+                white = (255, 255, 255, 255)
+                red = (255, 0, 0, 255)
+                green = (0, 255, 0, 255)
+                blue = (0, 0, 255, 255)
 
 
-        # ### Generate New Image
-        img_result.putdata(tuple(px_result))
+
+                ### White (Inside)
+                if rr > 127:
+                    
+                    th_0 = 20
+                    th_1 = 40
+                    th_2 = 60
+                    th_3 = 80
 
 
-        return img_result
+
+                    
+                    if d < th_0:
+                        px_result.append(red)
+
+                    elif d < th_1:
+                        px_result.append(green)
+
+                    elif d < th_2:
+                        px_result.append(blue)
+
+                    elif d < th_3:
+                        px_result.append(white)
+
+                    else:
+                        px_result.append(black)
+
+                ### Outside
+                else:
+                    c = (0, 0, 0, 0)
+                    px_result.append(c)
+                    
+            # ### Generate New Image
+            img_result.putdata(tuple(px_result))
+
+            return img_result
+
+
+
+        ### Contour : False
+        else:
+            px_result = [(0, 0, 0, 0) for i in range(w) for j in range(h)]
+            img_result.putdata(tuple(px_result))
+
+            return img_result
