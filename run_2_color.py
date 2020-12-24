@@ -16,7 +16,7 @@ ut = util.Util()
 # stl_name = "bunny-flatfoot_fixed_light.stl"
 
 prj_name = "bunny"
-stl_name = "bunny-flatfoot_fixed.stl"
+stl_name = "bunny-flatfoot_fixed_upsampling.stl"
 
 # prj_name = "ship"
 # stl_name = "3DBenchy_fixed.stl"
@@ -78,9 +78,9 @@ for i in range(LAYER_COUNT):
     height = (CANVAS_SIZE / LAYER_COUNT) * i
     # print(height)
 
-    # if i == 76:
-    if i < 100000:
-    # if i == 0:
+    # if i == 73:
+    if i > 70 and i < 100000:
+    # if i > 430:
 
         time_00 = time.time()
 
