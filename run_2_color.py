@@ -15,11 +15,11 @@ ut = util.Util()
 # prj_name = "bunny_light"
 # stl_name = "bunny-flatfoot_fixed_light.stl"
 
-# prj_name = "bunny"
-# stl_name = "bunny-flatfoot_fixed.stl"
+prj_name = "bunny"
+stl_name = "bunny-flatfoot_fixed.stl"
 
-prj_name = "ship"
-stl_name = "3DBenchy_fixed.stl"
+# prj_name = "ship"
+# stl_name = "3DBenchy_fixed.stl"
 
 
 
@@ -28,8 +28,8 @@ dir_path = "C:\\Users\\ysoky\\Documents\\Mesh_Voxel_Color\\"
 prj_path = dir_path + "_prj_\\" + prj_name + "\\"
 stl_path = dir_path + "_stl_\\" + stl_name
 
-fill_path = prj_path + "\\image_1\\"
-clrs_path = prj_path + "\\image_2\\"
+fill_path = prj_path + "image_1" + "\\"
+clrs_path = prj_path + "image_2" + "\\"
 
 
 ### Resolution : 300 DPI
@@ -73,20 +73,20 @@ for i in range(LAYER_COUNT):
     index = "%04d"%(int(i))
 
     fill_ = fill_path + "image_{}.jpg".format(index)
-    clrs_ = clrs_path + "image_{}.jpg".format(index)
+    clrs_ = clrs_path + "image_{}.png".format(index)
 
     height = (CANVAS_SIZE / LAYER_COUNT) * i
     # print(height)
 
     # if i == 76:
-    if i == 420:
-    # if i == 1000:
-
+    if i < 100000:
+    # if i == 0:
 
         time_00 = time.time()
 
         image_clrs = cl.scan_image_calc_color(fill_, height, pts_np)
-        image_clrs.show()
+        cl.export_image(image_clrs, clrs_)
+        # image_clrs.show()
 
         time_01 = time.time()
 
@@ -96,5 +96,5 @@ time_1 = time.time()
 
 ################################################################################
 
-print("Time_01 : {}Sec".format(time_1 - time_0))
-print("Time_0011 : {}Sec".format(time_01 - time_00))
+print("Total : {}Sec".format(time_1 - time_0))
+print("Process : {}Sec".format(time_01 - time_00))
