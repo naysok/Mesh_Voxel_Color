@@ -74,6 +74,9 @@ _prj_
 - [python] Numpyで巨大な配列を効率的に処理するためのTips集 (Qiita)  
   [https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0](https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0)  
 
+- Vectorized way of calculating row-wise dot product two matrices with Scipy（Stackoverrun）  
+  [https://stackoverrun.com/ja/q/4238423](https://stackoverrun.com/ja/q/4238423)  
+
 - STLファイルフォーマット  
   [https://www.hiramine.com/programming/3dmodelfileformat/stlfileformat.html](https://www.hiramine.com/programming/3dmodelfileformat/stlfileformat.html)
 
@@ -86,5 +89,3 @@ _prj_
 - Guide to Voxel Printing（GrabCAD）  
   [https://help.grabcad.com/article/230-guide-to-voxel-printing?locale=en&fbclid=IwAR3PvdP71KfqY1herjNa87oGvXnszbsXIcaNfOUYNfbDLn_kIZydNeyYXes](https://help.grabcad.com/article/230-guide-to-voxel-printing?locale=en&fbclid=IwAR3PvdP71KfqY1herjNa87oGvXnszbsXIcaNfOUYNfbDLn_kIZydNeyYXes)  
 
-  - Vectorized way of calculating row-wise dot product two matrices with Scipy（Stackoverrun）  
-  [https://stackoverrun.com/ja/q/4238423](https://stackoverrun.com/ja/q/4238423)  
