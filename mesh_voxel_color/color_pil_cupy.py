@@ -68,16 +68,19 @@ class ColorPILCupy():
 
     def clac_all_distance(self, pos, pts):
 
-        ### Cupy
+        ### Calc Cupy
 
+        ### Generate Vector
         v = pos - pts
         # print("v.shape :", v.shape)
 
         vt = v.T
 
+        ### Calc Distance
         d = cp.sqrt((vt[0] * vt[0]) + (vt[1] * vt[1]) + (vt[2] * vt[2]))
         # print("d.shape :", d.shape)
 
+        ### Select Min Value
         dm_cp = cp.amin(d, axis=0)
         # print("dm.shape :", dm_cp.shape)
 
@@ -106,10 +109,10 @@ class ColorPILCupy():
         px_length = len(px)
 
         ### Running on Cuda
-        print("Running on Cuda !!")
+        # print("Running on Cuda !!")
 
         ### Generate Distance-List
-        print("Distance")
+        # print("Distance")
         
         px_list = []
         for i in range(w):
@@ -120,7 +123,9 @@ class ColorPILCupy():
         pos_cp = cp.array(px_list)
         # print("pos.shape :", pos_cp.shape)
 
-        ### Process
+        ### Separate Process
+        ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
+
         SPLIT = 1000
         pos_cp_split = cp.array_split(pos_cp, SPLIT)
         # print(len(pos_cp_split))
@@ -140,12 +145,9 @@ class ColorPILCupy():
             dist_tmp.append(d)
 
         dist_list = cp.concatenate(dist_tmp, 0)
+
         print(len(dist_list))
         
-        # return None
-
-
-        # self.clac_all_distance(pos)
 
         """
 
