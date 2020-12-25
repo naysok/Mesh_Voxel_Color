@@ -19,11 +19,11 @@ ut = util.Util()
 class ColorPILCupy():
 
 
-    ############################
-    ####                     ###
-    ####     I/O + Basics    ###
-    ####                     ###
-    ############################
+    ###############################
+    ####                        ###
+    ####     I/O + Utilities    ###
+    ####                        ###
+    ###############################
 
 
     def remap_number_cp(self, arr, old_min, old_max, target_min, target_max):
@@ -31,29 +31,6 @@ class ColorPILCupy():
         new_arr = (arr - old_min) / (old_max - old_min) * (target_max - target_min) + target_min
 
         return new_arr
-
-
-    def open_image(self, path):
-        img = Image.open(path)
-        return img
-
-
-    def export_image(self, img, path):
-        img.save(path, quality=100)
-        print("Export : {}".format(path))
-
-
-    def create_canvas(self, canvas_size):
-        new = Image.new("RGB", (canvas_size, canvas_size), (255, 255, 255))
-        return new
-
-
-    def create_canvas_alpha(self, canvas_size):
-        new = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
-        return new
-
-
-    ########################################
 
 
     def get_points_from_stl(self, file_path):
@@ -84,6 +61,46 @@ class ColorPILCupy():
 
     def get_points_from_txt_np(self, file_path, volume_size, canvas_size):
         pass
+
+
+    ################################################################################
+
+
+    ######################################
+    ####                               ###
+    ####     Image Processing (PIL)    ###
+    ####                               ###
+    ######################################
+
+
+    def open_image(self, path):
+        img = Image.open(path)
+        return img
+
+
+    def export_image(self, img, path):
+        img.save(path, quality=100)
+        print("Export : {}".format(path))
+
+
+    def create_canvas(self, canvas_size):
+        new = Image.new("RGB", (canvas_size, canvas_size), (255, 255, 255))
+        return new
+
+
+    def create_canvas_alpha(self, canvas_size):
+        new = Image.new("RGBA", (canvas_size, canvas_size), (0, 0, 0, 0))
+        return new
+
+
+    ################################################################################
+
+
+    #####################
+    ####              ###
+    ####     Math     ###
+    ####              ###
+    #####################
 
 
     def clac_all_distance(self, pos, pts):
@@ -149,7 +166,7 @@ class ColorPILCupy():
         return dist_list
 
 
-    ########################################
+    ################################################################################
 
 
     #####################
