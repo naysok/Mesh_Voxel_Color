@@ -82,6 +82,10 @@ class ColorPILCupy():
         return pts_cp_remap
 
 
+    def get_points_from_txt_np(self, file_path, volume_size, canvas_size):
+        pass
+
+
     def clac_all_distance(self, pos, pts):
 
         ### Calc Cupy
@@ -182,74 +186,107 @@ class ColorPILCupy():
             dist_list = self.gen_disctance_list(w, h, height, pts_cp)
 
 
-
-
             ### Generate Color From Distance
             # print("Color")
 
-            dist_min = cp.amin(dist_list)
-            dist_max = cp.amax(dist_list)
-
-            dist = dist_list.tolist()
+            # dist = dist_list.tolist()
 
 
             # dist_remap = self.remap_number_cp(dist_list, 0, 600, 0, 150)
             # dist = dist_remap.tolist()
 
-
-            # print(type(dist_remap))
-            # print(type(dist))
-
             px_result = []
             
-            for j in range(px_length):
-                
-                rr, gg, bb = px[j]
-                d = dist_list[j]
+            px_np = cp.array(px)
+            dist_cp = dist_list
 
-                black = (0, 0, 0, 255)
-                white = (255, 255, 255, 255)
-                red = (255, 0, 0, 255)
-                green = (0, 255, 0, 255)
-                blue = (0, 0, 255, 255)
+            shape_cp = cp.amin(px_np, axis=1)
+            print(cp.amax(px_np))
+            print(cp.amin(px_np))
+
+            # shape_cp_bin = cp.where(shape_cp > 127, 1, 0)
+            shape_cp_alpha = cp.where(shape_cp > 127, 255, 0)
+            
+
+            # print("dist.shape :", dist_cp.shape)
+            # print("shape.shape :", shape_cp.shape)
+
+            th_0 = 30
+            th_1 = 60
+            th_2 = 90
+            th_3 = 120
+
+            # dist_cp = cp.where(dist_cp < th_0, )
 
 
+            dist_shape_cp = dist_cp * shape_cp
+            # print("dist_shape_cp.shape :", dist_shape_cp.shape)
+            
+            dist_img = cp.stack([dist_cp, dist_cp, dist_cp, dist_cp])
+            dist_img = dist_img.T
+            print("dist_img.shape :", dist_img.shape)
 
-                ### White (Inside)
-                if rr > 127:
-                    
-                    th_0 = 20
-                    th_1 = 40
-                    th_2 = 60
-                    th_3 = 80
+            dist = dist_img.tolist()
 
+            # exit()
 
-
-                    
-                    if d < th_0:
-                        px_result.append(red)
-
-                    elif d < th_1:
-                        px_result.append(green)
-
-                    elif d < th_2:
-                        px_result.append(blue)
-
-                    elif d < th_3:
-                        px_result.append(white)
-
-                    else:
-                        px_result.append(black)
-
-                ### Outside
-                else:
-                    c = (0, 0, 0, 0)
-                    px_result.append(c)
-                    
-            # ### Generate New Image
+            ### Generate New Image
             img_result.putdata(tuple(px_result))
 
             return img_result
+        
+            # return None
+
+            # px_result = np.where(dist_np < 4, -1, 100)
+
+            # for j in range(px_length):
+                
+            #     rr, gg, bb = px[j]
+            #     d = dist_list[j]
+
+            #     black = (0, 0, 0, 255)
+            #     white = (255, 255, 255, 255)
+            #     red = (255, 0, 0, 255)
+            #     green = (0, 255, 0, 255)
+            #     blue = (0, 0, 255, 255)
+
+
+
+            #     ### White (Inside)
+            #     if rr > 127:
+                    
+            #         th_0 = 20
+            #         th_1 = 40
+            #         th_2 = 60
+            #         th_3 = 80
+
+
+
+                    
+            #         if d < th_0:
+            #             px_result.append(red)
+
+            #         elif d < th_1:
+            #             px_result.append(green)
+
+            #         elif d < th_2:
+            #             px_result.append(blue)
+
+            #         elif d < th_3:
+            #             px_result.append(white)
+
+            #         else:
+            #             px_result.append(black)
+
+            #     ### Outside
+            #     else:
+            #         c = (0, 0, 0, 0)
+            #         px_result.append(c)
+                    
+            # ### Generate New Image
+        #     img_result.putdata(tuple(px_result))
+
+        #     return img_result
 
 
 
@@ -257,5 +294,4 @@ class ColorPILCupy():
         else:
             px_result = [(0, 0, 0, 0) for i in range(w) for j in range(h)]
             img_result.putdata(tuple(px_result))
-
             return img_result
