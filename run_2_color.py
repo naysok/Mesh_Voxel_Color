@@ -94,9 +94,9 @@ for i in range(LAYER_COUNT):
     height = (CANVAS_SIZE / LAYER_COUNT) * i
     # print(height)
 
-    # if i == :
+    if i > 0:
     # if i > 140:
-    if i == 430:
+    # if i == 430:
 
         time_00 = time.time()
 
