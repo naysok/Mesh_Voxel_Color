@@ -164,7 +164,7 @@ class ColorPILCupy():
         ### Separate Process
         ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
 
-        SPLIT = 500
+        SPLIT = 250
         pos_cp_split = cp.array_split(pos_cp, SPLIT)
         # print(len(pos_cp_split))
 
@@ -217,62 +217,93 @@ class ColorPILCupy():
 
 
         ### Running on Cuda
-        # print("Running on Cuda !!")
+        print("Running on Cuda !!")
+
 
         ### Contour : True
         if px_seg_0 > 127:
+
             ### Distance
             dist_list = self.gen_disctance_list(w, h, height, pts_cp)
+            # print("dist_list.shape :", dist_list.shape)
 
 
             ### Generate Color From Distance
-            # print("Color")
-
-            # dist = dist_list.tolist()
+            print("Color")
 
 
-            # dist_remap = self.remap_number_cp(dist_list, 0, 600, 0, 150)
-            # dist = dist_remap.tolist()
+            dist_remap = self.remap_number_cp(dist_list, 0, 300, 0, 255)
+            dist_remap = dist_remap.astype('int64')
 
-            px_result = []
+            # print("dist_remap.shape :", dist_remap.shape)
             
-            px_np = cp.array(px)
-            dist_cp = dist_list
+            ### Fill Array (255)
+            alpha_array = cp.ones(dist_list.shape) * 255
+            alpha_array = alpha_array.astype('int64')
 
-            shape_cp = cp.amin(px_np, axis=1)
-            print(cp.amax(px_np))
-            print(cp.amin(px_np))
+
+            dist_img = cp.stack([dist_remap, dist_remap, dist_remap, alpha_array])
+            dist_img = dist_img.T
+            print("dist_img.shape :", dist_img.shape)
+
+            # print(dist_img)
+
+            dist_4 = dist_img.tolist()
+            dist_4 = tuple(map(tuple, dist_4))
+
+            print("type(dist_4) :", type(dist_4))
+
+            ### Generate New Image
+            img_result.putdata(tuple(dist_4))
+
+            return img_result
+
+
+            ########################################
+
+
+            ### Generate New Image
+            # img_result.putdata(tuple(px_result))
+
+            # return img_result
+
+            # px_result = []
+            
+            # px_np = cp.array(px)
+            # dist_cp = dist_list
+
+            # shape_cp = cp.amin(px_np, axis=1)
 
             # shape_cp_bin = cp.where(shape_cp > 127, 1, 0)
-            shape_cp_alpha = cp.where(shape_cp > 127, 255, 0)
+            # shape_cp_alpha = cp.where(shape_cp > 127, 255, 0)
             
 
             # print("dist.shape :", dist_cp.shape)
             # print("shape.shape :", shape_cp.shape)
 
-            th_0 = 30
-            th_1 = 60
-            th_2 = 90
-            th_3 = 120
+            # th_0 = 30
+            # th_1 = 60
+            # th_2 = 90
+            # th_3 = 120
 
-            # dist_cp = cp.where(dist_cp < th_0, )
+            # # dist_cp = cp.where(dist_cp < th_0, )
 
 
-            dist_shape_cp = dist_cp * shape_cp
-            # print("dist_shape_cp.shape :", dist_shape_cp.shape)
+            # dist_shape_cp = dist_cp * shape_cp
+            # # print("dist_shape_cp.shape :", dist_shape_cp.shape)
             
-            dist_img = cp.stack([dist_cp, dist_cp, dist_cp, dist_cp])
-            dist_img = dist_img.T
-            print("dist_img.shape :", dist_img.shape)
+            # dist_img = cp.stack([dist_cp, dist_cp, dist_cp, dist_cp])
+            # dist_img = dist_img.T
+            # print("dist_img.shape :", dist_img.shape)
 
-            dist = dist_img.tolist()
+            # dist = dist_img.tolist()
 
             # exit()
 
             ### Generate New Image
-            img_result.putdata(tuple(px_result))
+            # img_result.putdata(tuple(px_result))
 
-            return img_result
+            # return img_result
         
             # return None
 
