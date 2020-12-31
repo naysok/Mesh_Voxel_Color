@@ -12,11 +12,12 @@ ut = util.Util()
 ################################################################################
 
 
-# prj_name = "bunny_light"
-# stl_name = "bunny-flatfoot_fixed_light.stl"
+prj_name = "bunny_light"
+stl_name = "bunny-flatfoot_fixed_light.stl"
 
-prj_name = "bunny"
-stl_name = "bunny-flatfoot_fixed_upsampling.stl"
+# prj_name = "bunny"
+# stl_name = "bunny-flatfoot_fixed_upsampling.stl"
+# stl_name = "bunny-flatfoot_fixed.stl"
 
 # prj_name = "ship"
 # stl_name = "3DBenchy_fixed.stl"
@@ -30,6 +31,10 @@ stl_path = dir_path + "_stl_\\" + stl_name
 
 fill_path = prj_path + "image_1" + "\\"
 clrs_path = prj_path + "image_2" + "\\"
+
+
+### pts_path
+pts_path = dir_path + "_pts_\\" + "bunny_10000.txt"
 
 
 ### Resolution : 300 DPI
@@ -57,14 +62,15 @@ time_0 = time.time()
 ### Prepare Project Foloder
 ut.prepare_prj_dir(dir_path, prj_name)
 
-### Get Points
-# pts = cl.get_points_from_stl(target_path)
+
+### [X] Get Points (numpy-array)
+# pts_np = cl.get_points_from_stl_np(target_path, VOLUME_SIZE, CANVAS_SIZE)
+# print("pts_np.shape :", pts_np.shape)
+
 ### Get Points (numpy-array)
-pts_np = cl.get_points_from_stl_np(target_path, VOLUME_SIZE, CANVAS_SIZE)
+pts_np = cl.get_points_from_txt_np(pts_path, VOLUME_SIZE, CANVAS_SIZE)
+# print("pts_np.shape :", pts_np.shape)
 
-
-# print(len(pts))
-# print(pts[0])
 
 
 for i in range(LAYER_COUNT):
@@ -78,9 +84,9 @@ for i in range(LAYER_COUNT):
     height = (CANVAS_SIZE / LAYER_COUNT) * i
     # print(height)
 
-    # if i == 73:
-    if i > 70 and i < 100000:
-    # if i > 430:
+    # if i == :
+    # if i > 140:
+    if i == 430:
 
         time_00 = time.time()
 
