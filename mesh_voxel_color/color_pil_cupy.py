@@ -118,16 +118,16 @@ class ColorPILCupy():
     ################################################################################
 
 
-    #####################
-    ####              ###
-    ####     Math     ###
-    ####              ###
-    #####################
+    ###########################
+    ####                    ###
+    ####     Math (Cupy)    ###
+    ####                    ###
+    ###########################
 
 
     def clac_all_distance(self, pos, pts):
 
-        ### Calc Cupy
+        ### Calc Distance with Cupy
 
         ### Generate Vector
         v = pos - pts
@@ -191,17 +191,20 @@ class ColorPILCupy():
 
     def gen_disctance_list_ds(self, w, h, height, downsampling_xy, pts_cp):
 
-        ### Generate Distance-List with DownSampling
+        ### Generate Distance-List
+        ### with DownSampling
 
         # print("Distance")
 
         px_list = []
         for i in range(w):
             for j in range(h):
-                px_list.append([[j, i, height]])
+                px = [j * downsampling_xy, i * downsampling_xy, height]
+                px_list.append([px])
         
         ### pos-numpy array (from Image)
         pos_cp = cp.array(px_list)
+        # print(pos_cp)
         # print("pos.shape :", pos_cp.shape)
 
         ### Separate Process
@@ -234,11 +237,11 @@ class ColorPILCupy():
     ################################################################################
 
 
-    #####################
-    ####              ###
-    ####     Draw     ###
-    ####              ###
-    #####################
+    ####################
+    ###              ###
+    ###     Draw     ###
+    ###              ###
+    ####################
 
 
     def scan_image_calc_color(self, file_path, height, pts_cp, downsampling_xy):
@@ -247,40 +250,68 @@ class ColorPILCupy():
         img_src = self.open_image(file_path)
         
         w, h = img_src.size
-        ww = int(w / downsampling_xy)
-        hh = int(h / downsampling_xy)
 
         ### DownSampling
-        img = img_src.resize((ww, hh))
-
-        ### Result Canvas
-        img_result = self.create_canvas_alpha(w)
-
+        ww = int(w / downsampling_xy)
+        hh = int(h / downsampling_xy)
+        img = img_src.resize((ww, hh), Image.LANCZOS)
 
         ### Read Shape
         px = img.getdata()
         px_cp = cp.array(px)
-        print("px_cp.shape :", px_cp.shape)
+        # print("px_cp.shape :", px_cp.shape)
+
+        ### Create Result Canvas
+        img_tmp = self.create_canvas_alpha(ww)
+        img_result = self.create_canvas_alpha(w)
 
         ### Segment Contour True/False
         px_seg_0 = cp.amax(px_cp)
 
 
+        ### Contour : False
+        if px_seg_0 < 127:
+            ### Export None-Image
+            px_result = [(0, 0, 0, 0) for i in range(w) for j in range(h)]
+            img_result.putdata(tuple(px_result))
+            return img_result
+
+
         ### Contour : True
-        if px_seg_0 > 127:
+        else:
 
             ### Running on Cuda
             # print("Running on Cuda !!")
 
-            ### Calc Distance
-            print("Distance")
+
+            ################################################################################################
+
+
+            ###########################
+            ###                     ###
+            ###    Calc Distance    ###
+            ###                     ###
+            ###########################
+
+            # print("Distance")
+
+            ### [X] Clac Distance
             # dist_list = self.gen_disctance_list(w, h, height, pts_cp)
-            dist_list = self.gen_disctance_list_ds(w, h, height, downsampling_xy, pts_cp)
+            
+            ### [O] Clac Distance with DownSampling
+            dist_list = self.gen_disctance_list_ds(ww, hh, height, downsampling_xy, pts_cp)
 
 
-            ### Generate Color From Distance
-            print("Color")
+            ################################################################################################
 
+
+            ############################################
+            ###                                      ###
+            ###     Generate Color From Distance     ###
+            ###                                      ###
+            ############################################
+            
+            # print("Color")
 
             dist_remap = self.remap_number_cp(dist_list, 0, 200, 0, 255)
             dist_remap = dist_remap.astype('int64')
@@ -294,124 +325,40 @@ class ColorPILCupy():
 
             dist_img = cp.stack([dist_remap, dist_remap, dist_remap, alpha_array])
             dist_img = dist_img.T
-            print("dist_img.shape :", dist_img.shape)
+            # print("dist_img.shape :", dist_img.shape)
 
             # print(dist_img)
 
             dist_4 = dist_img.tolist()
             dist_4 = tuple(map(tuple, dist_4))
 
-            print("type(dist_4) :", type(dist_4))
+            # print("type(dist_4) :", type(dist_4))
 
             ### Generate New Image
-            img_result.putdata(tuple(dist_4))
-
-            return img_result
+            img_tmp.putdata(tuple(dist_4))
 
 
-            ########################################
+            ################################################################################################
 
 
-            ### Generate New Image
-            # img_result.putdata(tuple(px_result))
+            #########################
+            ###                   ###
+            ###     Composite     ###
+            ###                   ###
+            #########################
 
-            # return img_result
+            # print("Composite")
 
-            # px_result = []
-            
-            # px_np = cp.array(px)
-            # dist_cp = dist_list
+            ### Scaling
+            img_dist = img_tmp.resize((w, h), Image.LANCZOS)
 
-            # shape_cp = cp.amin(px_np, axis=1)
+            ### Create Canvas for Composite
+            img_canvas = self.create_canvas_alpha(w)
 
-            # shape_cp_bin = cp.where(shape_cp > 127, 1, 0)
-            # shape_cp_alpha = cp.where(shape_cp > 127, 255, 0)
-            
+            ### Define Mask
+            img_mask = img_src.convert("L")
 
-            # print("dist.shape :", dist_cp.shape)
-            # print("shape.shape :", shape_cp.shape)
+            ### Composite
+            img_result = Image.composite(img_dist, img_canvas, img_mask)
 
-            # th_0 = 30
-            # th_1 = 60
-            # th_2 = 90
-            # th_3 = 120
-
-            # # dist_cp = cp.where(dist_cp < th_0, )
-
-
-            # dist_shape_cp = dist_cp * shape_cp
-            # # print("dist_shape_cp.shape :", dist_shape_cp.shape)
-            
-            # dist_img = cp.stack([dist_cp, dist_cp, dist_cp, dist_cp])
-            # dist_img = dist_img.T
-            # print("dist_img.shape :", dist_img.shape)
-
-            # dist = dist_img.tolist()
-
-            # exit()
-
-            ### Generate New Image
-            # img_result.putdata(tuple(px_result))
-
-            # return img_result
-        
-            # return None
-
-            # px_result = np.where(dist_np < 4, -1, 100)
-
-            # for j in range(px_length):
-                
-            #     rr, gg, bb = px[j]
-            #     d = dist_list[j]
-
-            #     black = (0, 0, 0, 255)
-            #     white = (255, 255, 255, 255)
-            #     red = (255, 0, 0, 255)
-            #     green = (0, 255, 0, 255)
-            #     blue = (0, 0, 255, 255)
-
-
-
-            #     ### White (Inside)
-            #     if rr > 127:
-                    
-            #         th_0 = 20
-            #         th_1 = 40
-            #         th_2 = 60
-            #         th_3 = 80
-
-
-
-                    
-            #         if d < th_0:
-            #             px_result.append(red)
-
-            #         elif d < th_1:
-            #             px_result.append(green)
-
-            #         elif d < th_2:
-            #             px_result.append(blue)
-
-            #         elif d < th_3:
-            #             px_result.append(white)
-
-            #         else:
-            #             px_result.append(black)
-
-            #     ### Outside
-            #     else:
-            #         c = (0, 0, 0, 0)
-            #         px_result.append(c)
-                    
-            # ### Generate New Image
-        #     img_result.putdata(tuple(px_result))
-
-        #     return img_result
-
-
-
-        ### Contour : False
-        else:
-            px_result = [(0, 0, 0, 0) for i in range(w) for j in range(h)]
-            img_result.putdata(tuple(px_result))
             return img_result
