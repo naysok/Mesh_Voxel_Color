@@ -12,12 +12,12 @@ ut = util.Util()
 ################################################################################
 
 
-prj_name = "bunny_light"
-stl_name = "bunny-flatfoot_fixed_light.stl"
+# prj_name = "bunny_light"
+# stl_name = "bunny-flatfoot_fixed_light.stl"
 
-# prj_name = "bunny"
+prj_name = "bunny"
 # stl_name = "bunny-flatfoot_fixed_upsampling.stl"
-# stl_name = "bunny-flatfoot_fixed.stl"
+stl_name = "bunny-flatfoot_fixed.stl"
 
 # prj_name = "ship"
 # stl_name = "3DBenchy_fixed.stl"
@@ -31,6 +31,7 @@ stl_path = dir_path + "_stl_\\" + stl_name
 
 fill_path = prj_path + "image_1" + "\\"
 clrs_path = prj_path + "image_2" + "\\"
+target_path = stl_path
 
 
 ### pts_path
@@ -49,8 +50,7 @@ CANVAS_SIZE = int(300 * INCH_AMP)
 LAYER_COUNT = int(VOLUME_SIZE / _LAYER_HEIGHT)
 
 
-### 
-target_path = stl_path
+DOWN_SAMPLING_XY = 2
 
 
 ################################################################################
@@ -63,13 +63,22 @@ time_0 = time.time()
 ut.prepare_prj_dir(dir_path, prj_name)
 
 
+
+################################
+
+
+### Get Points
+
 ### [X] Get Points (numpy-array)
 # pts_np = cl.get_points_from_stl_np(target_path, VOLUME_SIZE, CANVAS_SIZE)
 # print("pts_np.shape :", pts_np.shape)
 
-### Get Points (numpy-array)
+### [O] Get Points (numpy-array)
 pts_np = cl.get_points_from_txt_np(pts_path, VOLUME_SIZE, CANVAS_SIZE)
 # print("pts_np.shape :", pts_np.shape)
+
+
+################################
 
 
 
@@ -90,7 +99,7 @@ for i in range(LAYER_COUNT):
 
         time_00 = time.time()
 
-        image_clrs = cl.scan_image_calc_color(fill_, height, pts_np)
+        image_clrs = cl.scan_image_calc_color(fill_, height, pts_np, DOWN_SAMPLING_XY)
         cl.export_image(image_clrs, clrs_)
         # image_clrs.show()
 
