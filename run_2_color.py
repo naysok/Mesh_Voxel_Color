@@ -35,7 +35,7 @@ target_path = stl_path
 
 
 ### pts_path
-pts_path = dir_path + "_pts_\\" + "bunny_10000.txt"
+pts_path = dir_path + "_pts_\\" + "bunny_20000.txt"
 
 
 ### Resolution : 300 DPI
@@ -81,6 +81,7 @@ pts_np = cl.get_points_from_txt_np(pts_path, VOLUME_SIZE, CANVAS_SIZE)
 ################################
 
 
+### Define Color
 
 for i in range(LAYER_COUNT):
 
