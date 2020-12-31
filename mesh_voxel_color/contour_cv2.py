@@ -110,7 +110,7 @@ class ContourCV2():
 
         ### Not Exit Contours
         if len(contours) <= 1:
-            canvas_null = self.create_image(w)
+            canvas_null = self.create_image(int(w / up_sapling_xy))
             return canvas_null
 
         ### Draw Contour
