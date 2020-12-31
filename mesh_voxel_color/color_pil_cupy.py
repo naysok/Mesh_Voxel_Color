@@ -313,6 +313,42 @@ class ColorPILCupy():
             
             # print("Color")
 
+            ### Define Colors
+
+
+
+            ### Offset Pattern
+
+            dist_src = dist_list.tolist()
+            # print("len(dist_src) :", len(dist_src))
+
+            clrs = []
+
+            for d in dist_src:
+
+                th = 30
+
+                if d < (th * 1):
+                    clrs.append([255, 0, 0, 255])
+                
+                elif d < (th * 2):
+                    clrs.append([0, 255, 0, 255])
+
+                elif d < (th * 3):
+                    clrs.append([0, 0, 255, 255])
+                
+                else:
+                    clrs.append([255, 255, 255, 255])
+
+            clrs_tuple = tuple(map(tuple, clrs))
+            
+            ### Generate New Image
+            img_tmp.putdata(tuple(clrs_tuple))
+
+
+            """
+            ### Test Distance Map
+
             dist_remap = self.remap_number_cp(dist_list, 0, 200, 0, 255)
             dist_remap = dist_remap.astype('int64')
 
@@ -336,6 +372,7 @@ class ColorPILCupy():
 
             ### Generate New Image
             img_tmp.putdata(tuple(dist_4))
+            """
 
 
             ################################################################################################
