@@ -60,7 +60,29 @@ class ColorPILCupy():
 
 
     def get_points_from_txt_np(self, file_path, volume_size, canvas_size):
-        pass
+        
+        ### Cupy
+
+        with open(file_path) as f:
+            lines = f.readlines()
+
+        xyz_list = []
+
+        for line in lines:
+            elm = line.split(",")
+            xyz =[float(elm[0]), float(elm[1]), float(elm[2])]
+            xyz_list.append(xyz)
+
+        xyz_list = [xyz_list]
+
+        pts_cp = cp.array(xyz_list)
+
+        pts_cp_remap = self.remap_number_cp(pts_cp, 0, volume_size, 0, canvas_size)
+
+        # print("pts_cp_remap.shape :", pts_np_remap.shape)
+        # print(pts_cp_remap)
+
+        return pts_cp_remap
 
 
     ################################################################################
