@@ -150,6 +150,49 @@ class ColorPILCupy():
     def gen_disctance_list(self, w, h, height, pts_cp):
 
         ### Generate Distance-List
+
+        # print("Distance")
+
+        px_list = []
+        for i in range(w):
+            for j in range(h):
+                px_list.append([[j, i, height]])
+        
+        ### pos-numpy array (from Image)
+        pos_cp = cp.array(px_list)
+        # print("pos.shape :", pos_cp.shape)
+
+        ### Separate Process
+        ### https://qiita.com/kazuki_hayakawa/items/557edd922f9f1fafafe0
+
+        SPLIT = 250
+        pos_cp_split = cp.array_split(pos_cp, SPLIT)
+        # print(len(pos_cp_split))
+
+        dist_tmp = []
+
+        for i in range(SPLIT):
+
+            tmp_p = pos_cp_split[i]
+            # print("pts.shape :", tmp_p.shape)
+
+            ### pts-numpy array (from STL)
+            # print("pts.shape :", pts_cp.shape)
+
+            ### 
+            d = self.clac_all_distance(tmp_p, pts_cp)
+            dist_tmp.append(d)
+
+        dist_list = cp.concatenate(dist_tmp, 0)
+        # print(len(dist_list))
+
+        return dist_list
+
+
+    def gen_disctance_list_ds(self, w, h, height, downsampling_xy, pts_cp):
+
+        ### Generate Distance-List with DownSampling
+
         # print("Distance")
 
         px_list = []
@@ -198,41 +241,48 @@ class ColorPILCupy():
     #####################
 
 
-    def scan_image_calc_color(self, file_path, height, pts_cp):
+    def scan_image_calc_color(self, file_path, height, pts_cp, downsampling_xy):
 
         ### Open Image
-        img = self.open_image(file_path)
+        img_src = self.open_image(file_path)
+        
+        w, h = img_src.size
+        ww = int(w / downsampling_xy)
+        hh = int(h / downsampling_xy)
 
-        w, h = img.size
+        ### DownSampling
+        img = img_src.resize((ww, hh))
+
+        ### Result Canvas
         img_result = self.create_canvas_alpha(w)
 
+
+        ### Read Shape
         px = img.getdata()
-        px_length = len(px)
-        
         px_cp = cp.array(px)
+        print("px_cp.shape :", px_cp.shape)
+
+        ### Segment Contour True/False
         px_seg_0 = cp.amax(px_cp)
-
-        # print("px.shape :", px_cp.shape)
-        # print("px_seg_0 :", px_seg_0)
-
-
-        ### Running on Cuda
-        print("Running on Cuda !!")
 
 
         ### Contour : True
         if px_seg_0 > 127:
 
-            ### Distance
-            dist_list = self.gen_disctance_list(w, h, height, pts_cp)
-            # print("dist_list.shape :", dist_list.shape)
+            ### Running on Cuda
+            # print("Running on Cuda !!")
+
+            ### Calc Distance
+            print("Distance")
+            # dist_list = self.gen_disctance_list(w, h, height, pts_cp)
+            dist_list = self.gen_disctance_list_ds(w, h, height, downsampling_xy, pts_cp)
 
 
             ### Generate Color From Distance
             print("Color")
 
 
-            dist_remap = self.remap_number_cp(dist_list, 0, 300, 0, 255)
+            dist_remap = self.remap_number_cp(dist_list, 0, 200, 0, 255)
             dist_remap = dist_remap.astype('int64')
 
             # print("dist_remap.shape :", dist_remap.shape)
