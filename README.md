@@ -5,7 +5,37 @@
 このライブラリで生成した連番画像から 3D 描画は、3D プリントデータへの変換ソフトではできるが、適当なソフトウェアでは難しい。これだと不便なので擬似的にレンダリングを行うライブラリを書いた。  
 
 
-### Process  
+## Installation  
+
+Mesh_Voxel_Color contains several libraries, libraries from PyPI and libraries for related projects.
+
+And use Cuda Toolkit for fast processing of large matrix calculations.
+
+Mesh_Voxel_Color では、PyPI からダウンロードできる一般的なライブラリと、関連するプロジェクトとして書かれたプログラムを含みます。
+
+また、大規模な行列計算を高速に処理するために Cuda Toolkit を使用します。
+
+### Cuda Toolkit  
+[https://developer.nvidia.com/cuda-toolkit](https://developer.nvidia.com/cuda-toolkit)
+
+
+### Python Libraries  
+```
+pip install -r requirements.txt
+// Download the appropriate cupy-cuda for your version of Cuda.
+// cupy-cuda は Cuda のバージョンに合わせて適切なものをダウンロードする。
+```
+
+### Other Libraries  
+```
+mkdir _module_
+cd _module_
+git clone https://github.com/naysok/Mesh_Contour
+git clone https://github.com/naysok/Contour_Draw_3D
+```
+
+
+## Process  
 
 - [x] run_0_slice.py  
   - Calc Contour Line by Line-Plane Intersection Algorithm  
@@ -23,7 +53,7 @@
   - Generate Render Image (Contour_Draw_3D)
 
 
-### Project Result  
+## Project Result  
 
 ```
 _prj_
@@ -41,7 +71,7 @@ _prj_
 ```
 
 
-### Related Projects  
+## Related Projects  
 
 - Contour_Draw_3D  
   - 3D ジオメトリを輪切りして切り出した断面の連番画像から、擬似的に 3D ジオメトリを描画するライブラリ  
@@ -57,7 +87,7 @@ _prj_
   [https://github.com/naysok/GH_Renderer](https://github.com/naysok/GH_Renderer)  
 
 
-### Ref  
+## Ref  
 
 - レイと三角形の交差判定（Pheemaの学習帳）  
   [https://pheema.hatenablog.jp/entry/ray-triangle-intersection](https://pheema.hatenablog.jp/entry/ray-triangle-intersection)  
