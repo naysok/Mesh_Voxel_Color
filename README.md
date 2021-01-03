@@ -7,13 +7,9 @@
 
 ## Installation  
 
-Mesh_Voxel_Color contains several libraries, libraries from PyPI and libraries for related projects.
+Mesh_Voxel_Color contains several libraries, libraries from PyPI and libraries for related projects. And use Cuda Toolkit for fast processing of large matrix calculations.
 
-And use Cuda Toolkit for fast processing of large matrix calculations.
-
-Mesh_Voxel_Color では、PyPI からダウンロードできる一般的なライブラリと、関連するプロジェクトとして書かれたプログラムを含みます。
-
-また、大規模な行列計算を高速に処理するために Cuda Toolkit を使用します。
+Mesh_Voxel_Color では、PyPI からダウンロードできる一般的なライブラリと、関連するプロジェクトとして書かれたプログラムを含みます。また、大規模な行列計算を高速に処理するために Cuda Toolkit を使用します。
 
 ### Cuda Toolkit  
 [https://developer.nvidia.com/cuda-toolkit](https://developer.nvidia.com/cuda-toolkit)
