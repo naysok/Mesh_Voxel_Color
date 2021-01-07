@@ -154,7 +154,7 @@ class ContourCV2():
             img_boolean = self.boolean_canvas(canvas_all)
 
             ### Dilation
-            k1 = 4
+            k1 = 5
             kernel = np.ones((k1, k1), np.uint8)
             dilation = cv2.dilate(img_boolean, kernel, iterations = 1)
 
