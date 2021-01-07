@@ -398,4 +398,8 @@ class ColorPILCupy():
             ### Composite
             img_result = Image.composite(img_dist, img_canvas, img_mask)
 
-            return img_result
+            ### Flip
+            ### Image Coordination >> Rhino Coordination
+            img_flip = ImageOps.flip(img_result)
+
+            return img_flip
