@@ -63,9 +63,10 @@ _prj_
         ├── image_3
         │     // Affine Transform
         ├── image_4
-        │     // 3D Rendered (from image_3)
+        │     // Pseudo-Rendering
         └── image_5
-              // Calc CMYK (Draft-Data for Printer)
+              // Calc CMYK (from image_2)
+              // Draft-Data for 3D-Printing
 ```
 
 
