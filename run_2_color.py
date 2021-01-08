@@ -35,7 +35,8 @@ target_path = stl_path
 
 
 ### pts_path
-pts_path = dir_path + "_pts_\\" + "bunny_20000.txt"
+# pts_path = dir_path + "_pts_\\" + "bunny_20000.txt"
+pts_path = dir_path + "_pts_\\" + "bunny_lines.txt"
 
 
 ### Resolution : 300 DPI
@@ -94,7 +95,7 @@ for i in range(LAYER_COUNT):
     height = (CANVAS_SIZE / LAYER_COUNT) * i
     # print(height)
 
-    if i > 0:
+    if i >= 0:
     # if i > 140:
     # if i == 430:
 
