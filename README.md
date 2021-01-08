@@ -36,19 +36,17 @@ git clone https://github.com/naysok/Contour_Draw_3D
 ## Process  
 
 - [x] run_0_slice.py  
-  - Calc Contour Line by Line-Plane Intersection Algorithm  
-
+  - Calc Contour Line by Line-Plane Intersection Algorithm (Mesh_Contour)  
 - [x] run_1_fill.py  
-  - Calc Filled Contour by Find-Contour (OpenCV)  
-
-- [ ] run_2_color.py  
+  - Calc Filled Contour by Find-Contour, OpenCV  
+- [x] run_2_color.py  
   - Calc Color from Pixel-Target Distance  
-
-- [ ] run_3_convert_mat.py  
-  - Calc CMYK Material  
-
-- [ ] run_4_gen_render.py  
-  - Generate Render Image (Contour_Draw_3D)
+- [ ] run_3_transform.py 
+  - Affine Transformation (Contour_Draw_3D)  
+- [ ] run_4_render.py  
+  - Generate Render Image (Contour_Draw_3D)  
+- [ ] run_5_convert_mat.py  
+  - Calc CMYK (Draft-Data for Printer)  
 
 
 ## Project Result  
@@ -63,9 +61,11 @@ _prj_
         ├── image_2
         │     // Set Color
         ├── image_3
-        │     // Calc CMYK (Draft for Printer)
-        └── image_4
-              // 3D Rendered (from image_3)
+        │     // Affine Transform
+        ├── image_4
+        │     // 3D Rendered (from image_3)
+        └── image_5
+              // Calc CMYK (Draft-Data for Printer)
 ```
 
 
