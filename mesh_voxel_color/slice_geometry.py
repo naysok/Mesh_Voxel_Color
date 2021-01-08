@@ -1,5 +1,5 @@
 import sys
-sys.path.append("C:\\Users\\ysoky\\Documents\\Mesh_Voxel_Color\\_module_\\Mesh_Contour")
+sys.path.append("_module_\\Mesh_Contour")
 
 from mesh_contour import run_mesh_contour
 mc = run_mesh_contour.RunMeshContour()
