@@ -315,9 +315,32 @@ class ColorPILCupy():
 
             ### Define Colors
 
+            ################################################################################################
 
+            ### Offset Pattern (Small)
 
-            ### Offset Pattern
+            dist_src = dist_list.tolist()
+            # print("len(dist_src) :", len(dist_src))
+
+            clrs = []
+            amp = 1 / 2
+
+            for d in dist_src:
+
+                c = int((math.sin(d * amp) + 1) * (1 / 2) * 255)
+                cc = 255 - c
+
+                clrs.append([c, c, cc, 255])
+                
+            clrs_tuple = tuple(map(tuple, clrs))
+            
+            ### Generate New Image
+            img_tmp.putdata(tuple(clrs_tuple))
+
+            ################################################################################################
+
+            """
+            ### Offset Pattern (Large)
 
             dist_src = dist_list.tolist()
             # print("len(dist_src) :", len(dist_src))
@@ -344,7 +367,9 @@ class ColorPILCupy():
             
             ### Generate New Image
             img_tmp.putdata(tuple(clrs_tuple))
+            """
 
+            ################################################################################################
 
             """
             ### Test Distance Map
@@ -373,7 +398,6 @@ class ColorPILCupy():
             ### Generate New Image
             img_tmp.putdata(tuple(dist_4))
             """
-
 
             ################################################################################################
 
