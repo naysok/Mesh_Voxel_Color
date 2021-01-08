@@ -24,22 +24,10 @@ prj_path = dir_path + "_prj_\\" + prj_name + "\\"
 clrs_path = prj_path + "image_2" + "\\"
 affn_path = prj_path + "image_3" + "\\"
 
-
-### Resolution : 300 DPI
-### Size : mm
-
-_INCH = 25.4
-_LAYER_HEIGHT = 0.027
-
-INCH_AMP = 2.0
-VOLUME_SIZE = _INCH * INCH_AMP
-CANVAS_SIZE = int(300 * INCH_AMP)
-LAYER_COUNT = int(VOLUME_SIZE / _LAYER_HEIGHT)
-
 IMAGE_SIZE = (800, 800)
 
 ROT_UNIT = 90
-ROT_COUNT = 2
+ROT_COUNT = 0
 ### rotate = ROT_UNIT * ROT_COUNT
 
 ################################################################################
@@ -50,6 +38,9 @@ time_0 = time.time()
 
 ### Prepare Project Foloder
 ut.prepare_prj_dir(dir_path, prj_name)
+
+### Get File Count
+count = ut.get_file_count(clrs_path)
 
 
 ################################
@@ -62,7 +53,7 @@ mat_aff = dc.define_matrix_for_render(IMAGE_SIZE)
 # print("Matrix_Render :", mat_aff)
 
 
-for i in range(LAYER_COUNT):
+for i in range(count):
 
     ### Format
     index = "%04d"%(int(i))
