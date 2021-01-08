@@ -8,6 +8,12 @@ class Util():
         return ((src - old_min) / (old_max - old_min) * (new_max - new_min) + new_min)
 
 
+    def get_file_count(self, _dir):
+
+        count = len([name for name in os.listdir(_dir) if os.path.isfile(os.path.join(_dir, name))])
+        return count
+
+
     def hsv2rgb(self, color):
         pass
 
